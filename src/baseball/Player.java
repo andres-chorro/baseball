@@ -61,6 +61,20 @@ public class Player {
 	}
 	
 	/**
+	 * Update stats after a sacrifice
+	 * @param rbis number of runs on the sacrifice (0 or 1)
+	 */
+	public void sacrifice(int rbis) {
+		if (rbis < 0 || rbis > 1) {
+			System.out.println("Invalid number of RBIs on sacrifice");
+			return;
+		}
+		
+		this.rbis += rbis;
+		sacs++;
+	}
+	
+	/**
 	 * Update stats after a single.
 	 * @param rbis number of runs driven in on the single
 	 */
@@ -118,6 +132,20 @@ public class Player {
 		this.rbis += rbis;
 		homeruns++;
 		atBats++;
+	}
+	
+	/**
+	 * Update stats after a win.
+	 */
+	public void win() {
+		wins++;
+	}
+	
+	/**
+	 * Update stats after a loss.
+	 */
+	public void loss() {
+		losses++;
 	}
 	
 	/**

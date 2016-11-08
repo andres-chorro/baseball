@@ -28,4 +28,18 @@ public class Player {
 		this.lastName = lastName;
 		this.number = number;
 	}
+	
+	/**
+	 * Returns a players full name.
+	 * @return full name
+	 */
+	public String fullName() {
+		return firstName + ' ' + lastName;
+	}
+	
+	public static void main(String[] args) {
+		Player p = new Player("John", "Dowd", 25);
+		System.out.println(p.fullName());
+		
+	}
 }

@@ -30,7 +30,38 @@ public class Player {
 	}
 	
 	/**
-	 * Update status after hitting a single.
+	 * Update stats after a strikeout
+	 */
+	public void strikeOut() {
+		atBats++;
+		ks++;
+	}
+	
+	/**
+	 * Update stats after a putout
+	 */
+	public void putout() {
+		atBats++;
+	}
+	
+	/**
+	 * Update stats after a double play
+	 */
+	public void doublePlay() {
+		atBats++;
+		gidps++;
+	}
+	
+	/**
+	 * Update stats after a triple play
+	 */
+	public void triplePlay() {
+		atBats++;
+		gidps++;
+	}
+	
+	/**
+	 * Update stats after a single.
 	 * @param rbis number of runs driven in on the single
 	 */
 	public void single(int rbis) {
@@ -67,6 +98,8 @@ public class Player {
 		System.out.println(p.fullName());
 		System.out.println(p.battingAverage());
 		p.single(1);
+		p.strikeOut();
+		p.doublePlay();
 		System.out.println(p.battingAverage());
 		
 	}

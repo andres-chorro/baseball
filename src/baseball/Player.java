@@ -76,6 +76,51 @@ public class Player {
 	}
 	
 	/**
+	 * Update stats after a double.
+	 * @param rbis number of runs driven in on the double
+	 */
+	public void hitDouble(int rbis) {
+		if (rbis < 0 || rbis > 2) {
+			System.out.println("Invalid number of RBIs on double");
+			return;
+		}
+		
+		this.rbis += rbis;
+		doubles++;
+		atBats++;
+	}
+	
+	/**
+	 * Update stats after a triple.
+	 * @param rbis number of runs driven in on the triple
+	 */
+	public void triple(int rbis) {
+		if (rbis < 0 || rbis > 3) {
+			System.out.println("Invalid number of RBIs on triple");
+			return;
+		}
+		
+		this.rbis += rbis;
+		triples++;
+		atBats++;
+	}
+	
+	/**
+	 * Update stats after a homerun.
+	 * @param rbis number of runs driven in on the homerun
+	 */
+	public void homerun(int rbis) {
+		if (rbis < 1 || rbis > 4) {
+			System.out.println("Invalid number of RBIs on homerun");
+			return;
+		}
+		
+		this.rbis += rbis;
+		homeruns++;
+		atBats++;
+	}
+	
+	/**
 	 * Returns a players full name.
 	 * @return full name
 	 */

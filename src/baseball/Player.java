@@ -1,6 +1,8 @@
 package baseball;
 
-public class Player {
+import java.io.*;
+
+public class Player implements Serializable{
 	private String firstName;
 	private String lastName;
 	private int number;
@@ -242,6 +244,19 @@ public class Player {
 		p.doublePlay();
 		System.out.println(p.getBattingAverage());
 		System.out.println(p.getSluggingPercentage());
+		try {
+			FileOutputStream fileOut = new FileOutputStream("players.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(p);
+			out.close();
+			fileOut.close();
+			System.out.println("Serialized player is stored in players.ser");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 	}
 }

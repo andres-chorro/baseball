@@ -214,7 +214,7 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		return fullName() + number;
+		return fullName() + " " + number;
 	}
 	
 	/**

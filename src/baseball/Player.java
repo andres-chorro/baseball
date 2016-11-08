@@ -148,6 +148,62 @@ public class Player {
 		losses++;
 	}
 	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public int getNumber(){
+		return number;
+	}
+	
+	public int getAtBats() {
+		return atBats;
+	}
+	
+	public int getSingles() {
+		return singles;
+	}
+	
+	public int getDoubles() {
+		return doubles;
+	}
+	
+	public int getTriples() {
+		return triples;
+	}
+	
+	public int getHomeruns() {
+		return homeruns;
+	}
+	
+	public int getRbis() {
+		return rbis;
+	}
+
+	public int getSacs() {
+		return sacs;
+	}
+	
+	public int getKs() {
+		return ks;
+	}
+	
+	public int getGidps() {
+		return gidps;
+	}
+	
+	public int getWins() {
+		return wins;
+	}
+	
+	public int getLosses() {
+		return losses;
+	}
+	
 	/**
 	 * Returns a players full name.
 	 * @return full name
@@ -160,20 +216,32 @@ public class Player {
 	 * Return the player's batting average
 	 * @return the player's batting average
 	 */
-	public double battingAverage() {
+	public double getBattingAverage() {
 		if (atBats < 1)
 			return 0;
 		return (double) (singles + doubles + triples + homeruns) / atBats;
 	}
 	
+	/**
+	 * Returns the player's slugging percentage
+	 * @return slugging percentage
+	 */
+	public double getSluggingPercentage() {
+		if (atBats < 1)
+			return 0;
+		return (double) (singles + 2 * doubles + 3 * triples + 4 * homeruns) / atBats;
+	}
+	
 	public static void main(String[] args) {
 		Player p = new Player("John", "Dowd", 25);
 		System.out.println(p.fullName());
-		System.out.println(p.battingAverage());
+		System.out.println(p.getBattingAverage());
 		p.single(1);
+		p.homerun(3);
 		p.strikeOut();
 		p.doublePlay();
-		System.out.println(p.battingAverage());
+		System.out.println(p.getBattingAverage());
+		System.out.println(p.getSluggingPercentage());
 		
 	}
 }

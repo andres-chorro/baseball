@@ -235,7 +235,21 @@ public class Player implements Serializable{
 	}
 	
 	public static void main(String[] args) {
-		Player p = new Player("John", "Dowd", 25);
+		Player p = null;
+		try {
+			FileInputStream fileIn = new FileInputStream("players.ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			p = (Player) in.readObject();
+			in.close();
+			fileIn.close();
+		} catch(IOException i){
+			i.printStackTrace();
+			p = new Player("John", "Dowd", 25);
+		} catch(ClassNotFoundException c) {
+			System.out.println("Player class not found");
+			c.printStackTrace();
+			p = new Player("John", "Dowd", 25);
+		}
 		System.out.println(p.fullName());
 		System.out.println(p.getBattingAverage());
 		p.single(1);
@@ -244,6 +258,7 @@ public class Player implements Serializable{
 		p.doublePlay();
 		System.out.println(p.getBattingAverage());
 		System.out.println(p.getSluggingPercentage());
+		System.out.println(p.getAtBats());
 		try {
 			FileOutputStream fileOut = new FileOutputStream("players.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);

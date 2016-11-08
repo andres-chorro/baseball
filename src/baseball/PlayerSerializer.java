@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class PlayerSerializer {
-	private String filePath;
+	private final String filePath;
 
 	public PlayerSerializer(String filePath) {
 		this.filePath = filePath;
@@ -48,6 +48,8 @@ public class PlayerSerializer {
 		List<Player> players = new ArrayList<>();
 		players.add(new Player("Andres", "Chorro", 73));
 		players.add(new Player("Quique", "Chorro", 16));
+		ps.save(players);
+		players.add(new Player("Erik", "Jennings", 23));
 		ps.save(players);
 		System.out.println(ps.load());
 	}

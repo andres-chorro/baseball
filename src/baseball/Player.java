@@ -30,6 +30,21 @@ public class Player {
 	}
 	
 	/**
+	 * Update status after hitting a single.
+	 * @param rbis number of runs driven in on the single
+	 */
+	public void single(int rbis) {
+		if (rbis < 0 || rbis > 1) {
+			System.out.println("Invalid number of RBIs on single");
+			return;
+		}
+		
+		this.rbis += rbis;
+		singles++;
+		atBats++;
+	}
+	
+	/**
 	 * Returns a players full name.
 	 * @return full name
 	 */
@@ -37,9 +52,22 @@ public class Player {
 		return firstName + ' ' + lastName;
 	}
 	
+	/**
+	 * Return the player's batting average
+	 * @return the player's batting average
+	 */
+	public double battingAverage() {
+		if (atBats < 1)
+			return 0;
+		return (double) (singles + doubles + triples + homeruns) / atBats;
+	}
+	
 	public static void main(String[] args) {
 		Player p = new Player("John", "Dowd", 25);
 		System.out.println(p.fullName());
+		System.out.println(p.battingAverage());
+		p.single(1);
+		System.out.println(p.battingAverage());
 		
 	}
 }

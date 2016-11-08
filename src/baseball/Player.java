@@ -212,6 +212,11 @@ public class Player {
 		return firstName + ' ' + lastName;
 	}
 	
+	@Override
+	public String toString() {
+		return fullName() + number;
+	}
+	
 	/**
 	 * Return the player's batting average
 	 * @return the player's batting average

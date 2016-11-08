@@ -12,11 +12,13 @@ public class PlayerSerializer {
 
 	public void save(List<Player> players) {
 		try {
-			FileOutputStream fileOut = new FileOutputStream(filePath);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			File fileOut = new File(filePath);
+			fileOut.delete();
+			FileOutputStream outFile = new FileOutputStream(filePath);
+			ObjectOutputStream out = new ObjectOutputStream(outFile);
 			out.writeObject(players);
 			out.close();
-			fileOut.close();
+			outFile.close();
 			
 		} catch (IOException i) {
 			i.printStackTrace();
@@ -43,10 +45,10 @@ public class PlayerSerializer {
 	
 	public static void main(String[] args) {
 		PlayerSerializer ps = new PlayerSerializer("test1.ser");
-//		List<Player> players = new ArrayList<>();
-//		players.add(new Player("Andres", "Chorro", 73));
-//		players.add(new Player("Quique", "Chorro", 16));
-//		ps.save(players);
+		List<Player> players = new ArrayList<>();
+		players.add(new Player("Andres", "Chorro", 73));
+		players.add(new Player("Quique", "Chorro", 16));
+		ps.save(players);
 		System.out.println(ps.load());
 	}
 }

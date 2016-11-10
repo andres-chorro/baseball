@@ -59,14 +59,26 @@ public class PlayerSerializer {
 	}
 	
 	public static void main(String[] args) {
-		PlayerSerializer ps = new PlayerSerializer("test1.ser");
-		List<Player> players = new ArrayList<>();
-		players.add(new Player("Andres", "Chorro", 73));
-		players.add(new Player("Quique", "Chorro", 16));
-		ps.save(players);
-		players.add(new Player("Erik", "Jennings", 23));
-		ps.save(players);
-		System.out.println(ps.load());
-		System.out.println(ps.load());
+		//Test normal case.
+		PlayerSerializer ps1 = new PlayerSerializer("test1.ser");
+		List<Player> players1 = new ArrayList<>();
+		players1.add(new Player("Andres", "Chorro", 73));
+		players1.add(new Player("Quique", "Chorro", 16));
+		ps1.save(players1);
+		System.out.println(ps1.load());
+		
+		//Test case of loading before saving.
+		PlayerSerializer ps2 = new PlayerSerializer("test2.ser");
+		System.out.println(ps2.load());
+		
+		//Test case of loading twice in a row
+		PlayerSerializer ps3 = new PlayerSerializer("test3.ser");
+		List<Player> players3 = new ArrayList<>();
+		players3.add(new Player("Andres", "Chorro", 73));
+		ps3.save(players3);
+		System.out.println(ps3.load());
+		players3.add(new Player("Quique", "Chorro", 16));
+		System.out.println(ps3.load());
+		System.out.println(players3);
 	}
 }

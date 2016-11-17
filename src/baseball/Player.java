@@ -11,13 +11,13 @@ public class Player implements Serializable{
 	private int doubles;
 	private int triples;
 	private int homeruns;
+	private int runs;
 	private int rbis;
 	private int sacs;
 	private int ks;
 	private int gidps;
 	private int wins;
 	private int losses;
-	
 	
 	/**
 	 * Initializes a Player with a given name and number, and an empty stat sheet.
@@ -137,6 +137,13 @@ public class Player implements Serializable{
 	}
 	
 	/**
+	 * Update stats for a run scored.
+	 */
+	public void addRun() {
+		runs++;
+	}
+	
+	/**
 	 * Update stats after a win.
 	 */
 	public void win() {
@@ -180,6 +187,10 @@ public class Player implements Serializable{
 	
 	public int getHomeruns() {
 		return homeruns;
+	}
+	
+	public int getRuns() {
+		return runs;
 	}
 	
 	public int getRbis() {
@@ -275,8 +286,5 @@ public class Player implements Serializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 }

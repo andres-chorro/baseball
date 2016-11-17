@@ -100,20 +100,20 @@ public class Game {
 			if (bases.get(i) != null)
 				baseStrings[i] = bases.get(i).getLastName();
 			else
-				baseStrings[i] = "EMPTY";
+				baseStrings[i] = "";
 		}
 		// second
 		int gap = (28 - baseStrings[1].length()) / 2;
-		s.append(String.format("%" + gap + "s[%s]%" + gap + "s\n\n", 
-				"", baseStrings[1], ""));
+		s.append(String.format("%" + gap + "s[%s]\n\n", 
+				"", baseStrings[1]));
 		// first and third
 		gap = (26 - (baseStrings[0].length() + baseStrings[2].length()));
 		s.append(String.format("[%s]%" + gap + "s[%s]\n\n", baseStrings[2], "", baseStrings[0]));
 		// batter
 		String batterLastName = getCurrentBatter().getLastName();
 		gap = (28 - batterLastName.length()) / 2;
-		s.append(String.format("%" + gap + "s[%s]%" + gap + "s\n\n",
-				"", batterLastName, ""));
+		s.append(String.format("%" + gap + "s[%s]\n\n",
+				"", batterLastName));
 		return s.toString();
 	}
 
@@ -161,19 +161,16 @@ public class Game {
 		Game g = new Game(dodgers, giants);
 
 		g.single();
-		System.out.println("Kershaw single: " + g.bases);
+		System.out.println("Kershaw single:\n" + g);
 		g.single();
-		System.out.println("Puig single: " + g.bases);
+		System.out.println("Puig single:\n" + g);
 		g.hitDouble();
-		System.out.println("Kershaw double: " + g.bases);
-		System.out.println(g);
+		System.out.println("Kershaw double:\n" + g);
 		g.triple();
-		System.out.println("Puig triple: " + g.bases);
+		System.out.println("Puig triple:\n" + g);
 		g.homerun();
-		System.out.println("Kershaw homerun " + g.bases);
-		System.out.println(g.awayScore);
+		System.out.println("Kershaw homerun:\n" + g);
 		System.out.println("Kershaw RBIS: " + dodgers.get(0).getRbis());
-		System.out.println(g);
 	}
 
 }

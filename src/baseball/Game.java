@@ -97,7 +97,10 @@ public class Game {
 	}
 	
 	public void doublePlay() {
-		// TODO: check if double play situation
+		if (!isDoublePlaySituation()) {
+			System.out.println("Error: not a double-play situation!");
+			return;
+		}
 		getCurrentBatter().doublePlay();
 		incrementHitter();
 		int leadRunnerIndex = 2;
@@ -116,6 +119,23 @@ public class Game {
 	 */
 	public Player getCurrentBatter() {
 		return isBottom ? homeTeam.get(currentHomeHitter) : awayTeam.get(currentAwayHitter);
+	}
+	
+	/**
+	 * Returns true if it is possible to hit a double play given the game state.
+	 * @return true when a double play is possible
+	 */
+	public boolean isDoublePlaySituation() {
+		if (outs > 1)
+			return false;
+		
+		int runnersOn = 0;
+		for (Player p: bases) {
+			if (p != null){
+				runnersOn++;
+			}
+		}
+		return runnersOn > 0;
 	}
 
 	@Override
@@ -216,19 +236,21 @@ public class Game {
 		Game g = new Game(dodgers, giants);
 
 		g.single();
-		System.out.println("Kershaw single:\n" + g);
-		g.single();
-		System.out.println("Puig single:\n" + g);
+		System.out.println("Single:\n" + g);
+		g.strikeOut();
+		System.out.println("Strikeout:\n" + g);
+		g.strikeOut();
+		System.out.println("Strikeout:\n" + g);
 		g.doublePlay();
-		System.out.println("Kershaw double play:\n" + g);
+		System.out.println("Double play:\n" + g);
 		g.strikeOut();
-		System.out.println("Puig strikeout:\n" + g);
+		System.out.println("strikeout:\n" + g);
 		g.homerun();
-		System.out.println("Kershaw homerun:\n" + g);
+		System.out.println("homerun:\n" + g);
 		g.strikeOut();
-		System.out.println("Puig strikeOut:\n" + g);
+		System.out.println("strikeOut:\n" + g);
 		g.strikeOut();
-		System.out.println("Kershaw strikeOut:\n" + g);
+		System.out.println("strikeOut:\n" + g);
 		System.out.println("Kershaw RBIS: " + dodgers.get(0).getRbis());
 		System.out.println("Puig Average: " + dodgers.get(1).getBattingAverage());
 	}

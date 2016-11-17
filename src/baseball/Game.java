@@ -52,6 +52,14 @@ public class Game {
 	private Player getCurrentBatter() {
 		return isBottom ? homeTeam.get(currentHomeHitter) : awayTeam.get(currentAwayHitter);
 	}
+	
+	private void incrementHitter() {
+		if(!isBottom) {
+			currentAwayHitter = (currentAwayHitter + 1) % awayTeam.size();
+		} else {
+			currentHomeHitter = (currentHomeHitter + 1) % homeTeam.size();
+		}
+	}
 
 	public static void main(String[] args) {
 		Game g = new Game(new ArrayList<Player>(), new ArrayList<Player>());

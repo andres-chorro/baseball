@@ -106,7 +106,7 @@ public class Game {
 		}
 		bases.set(leadRunnerIndex, null);
 		outs += 2;
-		
+		checkInningOver();
 	}
 
 	/**

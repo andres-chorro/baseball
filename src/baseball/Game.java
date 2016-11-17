@@ -60,7 +60,7 @@ public class Game {
 			Player curr = bases.removeLast();
 			if (curr != null) {
 				runs++;
-				// TODO curr.addRun();
+				curr.addRun();
 			}
 		}
 		if (!isBottom)

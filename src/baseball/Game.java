@@ -85,6 +85,29 @@ public class Game {
 		outs++;
 		checkInningOver();
 	}
+	
+	/**
+	 * Update Game to refelct a putout by the current hitter.
+	 */
+	public void putOut() {
+		getCurrentBatter().putout();
+		incrementHitter();
+		outs++;
+		checkInningOver();
+	}
+	
+	public void doublePlay() {
+		// TODO: check if double play situation
+		getCurrentBatter().doublePlay();
+		incrementHitter();
+		int leadRunnerIndex = 2;
+		while (bases.get(leadRunnerIndex) == null) {
+			leadRunnerIndex--;
+		}
+		bases.set(leadRunnerIndex, null);
+		outs += 2;
+		
+	}
 
 	/**
 	 * Gets the current batter.
@@ -101,7 +124,7 @@ public class Game {
 		// add headings
 		s.append(String.format("Away:%3d                 %s%2d\n",
 				awayScore, isBottom ? "Bot" : "Top", inning));
-		s.append(String.format("Home:%3d          outs [%c] [%c]\n\n",
+		s.append(String.format("Home:%3d          Outs [%c] [%c]\n\n",
 				homeScore, outs > 0 ? 'X' : ' ', outs > 1 ? 'X' : ' '));
 		
 		// add bases
@@ -168,11 +191,19 @@ public class Game {
 		if (outs < 3) {
 			return;
 		}
+		
+		//clear the bases
+		bases = new LinkedList<>();
+		for (int i = 0; i < 3; i++) {
+			bases.add(null);
+		}
+		
 		if (isBottom) {
 			inning++;
 		}
 		isBottom = !isBottom;
 		outs = 0;
+		
 	}
 
 	public static void main(String[] args) {
@@ -188,8 +219,8 @@ public class Game {
 		System.out.println("Kershaw single:\n" + g);
 		g.single();
 		System.out.println("Puig single:\n" + g);
-		g.hitDouble();
-		System.out.println("Kershaw double:\n" + g);
+		g.doublePlay();
+		System.out.println("Kershaw double play:\n" + g);
 		g.strikeOut();
 		System.out.println("Puig strikeout:\n" + g);
 		g.homerun();
@@ -199,6 +230,7 @@ public class Game {
 		g.strikeOut();
 		System.out.println("Kershaw strikeOut:\n" + g);
 		System.out.println("Kershaw RBIS: " + dodgers.get(0).getRbis());
+		System.out.println("Puig Average: " + dodgers.get(1).getBattingAverage());
 	}
 
 }

@@ -7,6 +7,7 @@ public class Game {
 	private List<Player> homeTeam;
 	private int currentAwayHitter;
 	private int currentHomeHitter;
+	private int outs;
 	private int inning;
 	private boolean isBottom;
 	private int awayScore;
@@ -18,6 +19,7 @@ public class Game {
 		this.homeTeam = homeTeam;
 		currentAwayHitter = 0;
 		currentHomeHitter = 0;
+		outs = 0;
 		inning = 1;
 		isBottom = false;
 		awayScore = 0;
@@ -37,7 +39,7 @@ public class Game {
 		currentHitter.single(countRuns());
 		incrementHitter();
 	}
-	
+
 	/**
 	 * Update the game to reflect a double by the current hitter.
 	 */
@@ -48,7 +50,7 @@ public class Game {
 		currentHitter.hitDouble(countRuns());
 		incrementHitter();
 	}
-	
+
 	/**
 	 * Update the game to reflect a triple by the current hitter.
 	 */
@@ -60,7 +62,7 @@ public class Game {
 		currentHitter.triple(countRuns());
 		incrementHitter();
 	}
-	
+
 	/**
 	 * Update the game to reflect a homerun by the current hitter.
 	 */
@@ -81,6 +83,38 @@ public class Game {
 	 */
 	public Player getCurrentBatter() {
 		return isBottom ? homeTeam.get(currentHomeHitter) : awayTeam.get(currentAwayHitter);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		// add headings
+		s.append(String.format("Away:%3d                 %s%2d\n",
+				awayScore, isBottom ? "Bot" : "Top", inning));
+		s.append(String.format("Home:%3d          outs [%c] [%c]\n\n",
+				homeScore, outs > 0 ? 'X' : ' ', outs > 1 ? 'X' : ' '));
+		
+		// add bases
+		String[] baseStrings = new String[3];
+		for (int i = 0; i < 3; i++) {
+			if (bases.get(i) != null)
+				baseStrings[i] = bases.get(i).getLastName();
+			else
+				baseStrings[i] = "EMPTY";
+		}
+		// second
+		int gap = (28 - baseStrings[1].length()) / 2;
+		s.append(String.format("%" + gap + "s[%s]%" + gap + "s\n\n", 
+				"", baseStrings[1], ""));
+		// first and third
+		gap = (26 - (baseStrings[0].length() + baseStrings[2].length()));
+		s.append(String.format("[%s]%" + gap + "s[%s]\n\n", baseStrings[2], "", baseStrings[0]));
+		// batter
+		String batterLastName = getCurrentBatter().getLastName();
+		gap = (28 - batterLastName.length()) / 2;
+		s.append(String.format("%" + gap + "s[%s]%" + gap + "s\n\n",
+				"", batterLastName, ""));
+		return s.toString();
 	}
 
 	/**
@@ -120,24 +154,26 @@ public class Game {
 	public static void main(String[] args) {
 		List<Player> dodgers = new ArrayList<>();
 		List<Player> giants = new ArrayList<>();
-		dodgers.add(new Player("Klayton", "Keyshaw", 22));
+		dodgers.add(new Player("Klayton", "Kershaw", 22));
 		dodgers.add(new Player("Yasiel", "Puig", 66));
 		giants.add(new Player("Buster", "Posey", 28));
 		giants.add(new Player("Brandon", "Crawford", 35));
 		Game g = new Game(dodgers, giants);
-		
+
 		g.single();
 		System.out.println("Kershaw single: " + g.bases);
 		g.single();
 		System.out.println("Puig single: " + g.bases);
 		g.hitDouble();
 		System.out.println("Kershaw double: " + g.bases);
+		System.out.println(g);
 		g.triple();
 		System.out.println("Puig triple: " + g.bases);
 		g.homerun();
 		System.out.println("Kershaw homerun " + g.bases);
 		System.out.println(g.awayScore);
 		System.out.println("Kershaw RBIS: " + dodgers.get(0).getRbis());
+		System.out.println(g);
 	}
 
 }

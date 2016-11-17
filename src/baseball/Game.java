@@ -75,6 +75,16 @@ public class Game {
 		currentHitter.homerun(countRuns());
 		incrementHitter();
 	}
+	
+	/**
+	 * Update game to reflect a strikeout by the current hitter.
+	 */
+	public void strikeOut() {
+		getCurrentBatter().strikeOut();
+		incrementHitter();
+		outs++;
+		checkInningOver();
+	}
 
 	/**
 	 * Gets the current batter.
@@ -112,7 +122,7 @@ public class Game {
 		// batter
 		String batterLastName = getCurrentBatter().getLastName();
 		gap = (28 - batterLastName.length()) / 2;
-		s.append(String.format("%" + gap + "s[%s]\n\n",
+		s.append(String.format("%" + gap + "s[%s]\n",
 				"", batterLastName));
 		return s.toString();
 	}
@@ -150,6 +160,20 @@ public class Game {
 			currentHomeHitter = (currentHomeHitter + 1) % homeTeam.size();
 		}
 	}
+	
+	/**
+	 * Performs the inning switch if necessary
+	 */
+	private void checkInningOver() {
+		if (outs < 3) {
+			return;
+		}
+		if (isBottom) {
+			inning++;
+		}
+		isBottom = !isBottom;
+		outs = 0;
+	}
 
 	public static void main(String[] args) {
 		List<Player> dodgers = new ArrayList<>();
@@ -166,10 +190,14 @@ public class Game {
 		System.out.println("Puig single:\n" + g);
 		g.hitDouble();
 		System.out.println("Kershaw double:\n" + g);
-		g.triple();
-		System.out.println("Puig triple:\n" + g);
+		g.strikeOut();
+		System.out.println("Puig strikeout:\n" + g);
 		g.homerun();
 		System.out.println("Kershaw homerun:\n" + g);
+		g.strikeOut();
+		System.out.println("Puig strikeOut:\n" + g);
+		g.strikeOut();
+		System.out.println("Kershaw strikeOut:\n" + g);
 		System.out.println("Kershaw RBIS: " + dodgers.get(0).getRbis());
 	}
 

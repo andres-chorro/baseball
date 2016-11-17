@@ -82,8 +82,22 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
-		Game g = new Game(new ArrayList<Player>(), new ArrayList<Player>());
+		List<Player> dodgers = new ArrayList<>();
+		List<Player> giants = new ArrayList<>();
+		dodgers.add(new Player("Klayton", "Keyshaw", 22));
+		giants.add(new Player("Buster", "Posey", 28));
+		Game g = new Game(dodgers, giants);
 		System.out.println(g.bases.size());
+		g.single();
+		System.out.println(g.bases);
+		g.single();
+		g.single();
+		System.out.println(g.bases);
+		g.single();
+		System.out.println(g.awayScore);
+		System.out.println(dodgers.get(0).getRuns());
+		System.out.println(dodgers.get(0).getRbis());
+		System.out.println(dodgers.get(0).getBattingAverage());
 	}
 
 }

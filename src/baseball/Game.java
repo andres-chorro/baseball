@@ -37,6 +37,17 @@ public class Game {
 		currentHitter.single(countRuns());
 		incrementHitter();
 	}
+	
+	/**
+	 * Update the game to reflect a double by the current hitter.
+	 */
+	public void hitDouble() {
+		Player currentHitter = getCurrentBatter();
+		bases.push(currentHitter);
+		bases.push(null);
+		currentHitter.hitDouble(countRuns());
+		incrementHitter();
+	}
 
 	/**
 	 * Gets the current batter.
@@ -85,19 +96,18 @@ public class Game {
 		List<Player> dodgers = new ArrayList<>();
 		List<Player> giants = new ArrayList<>();
 		dodgers.add(new Player("Klayton", "Keyshaw", 22));
+		dodgers.add(new Player("Yasiel", "Puig", 66));
 		giants.add(new Player("Buster", "Posey", 28));
+		giants.add(new Player("Brandon", "Crawford", 35));
 		Game g = new Game(dodgers, giants);
-		System.out.println(g.bases.size());
+		
 		g.single();
-		System.out.println(g.bases);
+		System.out.println("Kershaw single: " + g.bases);
 		g.single();
+		g.hitDouble();
+		System.out.println("Kershaw double, puig to 3rd: " + g.bases);
 		g.single();
-		System.out.println(g.bases);
-		g.single();
-		System.out.println(g.awayScore);
-		System.out.println(dodgers.get(0).getRuns());
-		System.out.println(dodgers.get(0).getRbis());
-		System.out.println(dodgers.get(0).getBattingAverage());
+		System.out.println("Puig single, Dodgers score 2nd run: " + g.awayScore);
 	}
 
 }

@@ -35,6 +35,15 @@ public class Game {
 		Player currentHitter = getCurrentBatter();
 		bases.push(currentHitter);
 		currentHitter.single(countRuns());
+		incrementHitter();
+	}
+	
+	/**
+	 * Gets the current batter.
+	 * @return the current batter
+	 */
+	public Player getCurrentBatter() {
+		return isBottom ? homeTeam.get(currentHomeHitter) : awayTeam.get(currentAwayHitter);
 	}
 	
 	/**
@@ -48,11 +57,10 @@ public class Game {
 		// TODO: increments scores
 		return 0;
 	}
-	
-	private Player getCurrentBatter() {
-		return isBottom ? homeTeam.get(currentHomeHitter) : awayTeam.get(currentAwayHitter);
-	}
-	
+
+	/**
+	 * Updates the current hitter variables to reflect the end of the at-bat.
+	 */
 	private void incrementHitter() {
 		if(!isBottom) {
 			currentAwayHitter = (currentAwayHitter + 1) % awayTeam.size();

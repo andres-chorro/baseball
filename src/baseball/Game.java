@@ -48,6 +48,31 @@ public class Game {
 		currentHitter.hitDouble(countRuns());
 		incrementHitter();
 	}
+	
+	/**
+	 * Update the game to reflect a triple by the current hitter.
+	 */
+	public void triple() {
+		Player currentHitter = getCurrentBatter();
+		bases.push(currentHitter);
+		bases.push(null);
+		bases.push(null);
+		currentHitter.triple(countRuns());
+		incrementHitter();
+	}
+	
+	/**
+	 * Update the game to reflect a homerun by the current hitter.
+	 */
+	public void homerun() {
+		Player currentHitter = getCurrentBatter();
+		bases.push(currentHitter);
+		bases.push(null);
+		bases.push(null);
+		bases.push(null);
+		currentHitter.homerun(countRuns());
+		incrementHitter();
+	}
 
 	/**
 	 * Gets the current batter.
@@ -104,10 +129,15 @@ public class Game {
 		g.single();
 		System.out.println("Kershaw single: " + g.bases);
 		g.single();
+		System.out.println("Puig single: " + g.bases);
 		g.hitDouble();
-		System.out.println("Kershaw double, puig to 3rd: " + g.bases);
-		g.single();
-		System.out.println("Puig single, Dodgers score 2nd run: " + g.awayScore);
+		System.out.println("Kershaw double: " + g.bases);
+		g.triple();
+		System.out.println("Puig triple: " + g.bases);
+		g.homerun();
+		System.out.println("Kershaw homerun " + g.bases);
+		System.out.println(g.awayScore);
+		System.out.println("Kershaw RBIS: " + dodgers.get(0).getRbis());
 	}
 
 }

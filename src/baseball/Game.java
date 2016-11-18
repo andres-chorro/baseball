@@ -30,6 +30,13 @@ public class Game {
 			bases.push(null);
 		}
 	}
+	
+	/**
+	 * Update the game to reflect a sacrifice by the current hitter.
+	 */
+	public void sacrifice() {
+		// TODO
+	}
 
 	/**
 	 * Update the game to reflect a single by the current hitter.
@@ -134,19 +141,25 @@ public class Game {
 	}
 	
 	/**
+	 * Gets the number of runners currently on base.
+	 * @return the number of runners on base.
+	 */
+	public int runnersOn() {
+		int result = 0;
+		for (Player p : bases) {
+			if (p != null) {
+				result++;
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Returns true if it is possible to hit a double play given the game state.
 	 * @return true when a double play is possible
 	 */
 	public boolean isDoublePlaySituation() {
-		if (outs > 1)
-			return false;
-		
-		int runnersOn = 0;
-		for (Player p: bases) {
-			if (p != null)
-				runnersOn++;
-		}
-		return runnersOn > 0;
+		return outs < 2 && runnersOn() > 0;
 	}
 	
 	/**
@@ -154,15 +167,7 @@ public class Game {
 	 * @return true when a triple play is possible
 	 */
 	public boolean isTriplePlaySituation() {
-		if (outs > 0)
-			return false;
-		
-		int runnersOn = 0;
-		for (Player p: bases) {
-			if (p != null)
-				runnersOn++;
-		}
-		return runnersOn > 1;
+		return outs < 1 && runnersOn() > 1;
 	}
 
 	@Override
@@ -250,7 +255,6 @@ public class Game {
 		}
 		isBottom = !isBottom;
 		outs = 0;
-		
 	}
 
 	public static void main(String[] args) {

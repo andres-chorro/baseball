@@ -26,7 +26,6 @@ public class BaseballDriver {
 			System.out.println(game);
 			System.out.println(mainMenuText());
 			String input = sc.next().toLowerCase();
-			//TODO: finish cases.
 			switch (input) {
 			case "single":
 				game.single();
@@ -46,6 +45,22 @@ public class BaseballDriver {
 			case "strikeout":
 				game.strikeOut();
 				break;
+			case "doubleplay":
+				if (!game.isDoublePlaySituation()) {
+					System.out.println("Not a double-play situation!");
+					break;
+				} else {
+					game.doublePlay();
+					break;
+				}
+			case "tripleplay":
+				if (!game.isTriplePlaySituation()) {
+					System.out.println("Not a triple-play situation!");
+					break;
+				} else {
+					game.triplePlay();
+					break;
+				}
 			case "quit":
 				done = true;
 				break;
@@ -64,7 +79,8 @@ public class BaseballDriver {
 		sb.append("[putout] [strikeout]");
 		if (game.isDoublePlaySituation())
 			sb.append(" [doubleplay]");
-		// TODO: add triple play option.
+		if (game.isTriplePlaySituation())
+			sb.append(" [tripleplay]");
 		sb.append("\n[quit]");
 		return sb.toString();
 	}

@@ -45,6 +45,14 @@ public class BaseballDriver {
 			case "strikeout":
 				game.strikeOut();
 				break;
+			case "sacrifice":
+				if (!game.isSacrificeSituation()) {
+					System.out.println("Not a sacrifice situation!");
+					break;
+				} else {
+					game.sacrifice();
+					break;
+				}
 			case "doubleplay":
 				if (!game.isDoublePlaySituation()) {
 					System.out.println("Not a double-play situation!");
@@ -55,7 +63,7 @@ public class BaseballDriver {
 				}
 			case "tripleplay":
 				if (!game.isTriplePlaySituation()) {
-					System.out.println("Not a triple-play situation!");
+					System.out.println("Not a triple-play situation");
 					break;
 				} else {
 					game.triplePlay();
@@ -77,6 +85,8 @@ public class BaseballDriver {
 		sb.append("Choose one of the following options:\n");
 		sb.append("[single] [double] [triple] [homerun]\n");
 		sb.append("[putout] [strikeout]");
+		if (game.isSacrificeSituation())
+			sb.append(" [sacrifice]");
 		if (game.isDoublePlaySituation())
 			sb.append(" [doubleplay]");
 		if (game.isTriplePlaySituation())

@@ -32,13 +32,6 @@ public class Game {
 	}
 	
 	/**
-	 * Update the game to reflect a sacrifice by the current hitter.
-	 */
-	public void sacrifice() {
-		// TODO
-	}
-
-	/**
 	 * Update the game to reflect a single by the current hitter.
 	 */
 	public void single() {
@@ -95,7 +88,7 @@ public class Game {
 	}
 	
 	/**
-	 * Update Game to refelct a putout by the current hitter.
+	 * Update Game to reflect a putout by the current hitter.
 	 */
 	public void putOut() {
 		getCurrentBatter().putout();
@@ -104,6 +97,20 @@ public class Game {
 		checkInningOver();
 	}
 	
+	/**
+	 * Update the game to reflect a sacrifice by the current hitter.
+	 */
+	public void sacrifice() {
+		if (!isSacrificeSituation()) {
+			System.out.println("Error: not a sacrifice situation!");
+			return;
+		}
+		bases.push(null);
+		getCurrentBatter().sacrifice(countRuns());
+		incrementHitter();
+		outs++;
+	}
+
 	public void doublePlay() {
 		if (!isDoublePlaySituation()) {
 			System.out.println("Error: not a double-play situation!");
@@ -154,6 +161,16 @@ public class Game {
 		return result;
 	}
 	
+	/**
+	 * Returns true if a sacrifice is any different than a putout given the game state.
+	 * Note: for my purposes, this is identical to a double play situation. For readability and
+	 * maintainability, I have split the functions up.
+	 * @return true when runner(s) can be moved over by a sacrifice.
+	 */
+	public boolean isSacrificeSituation() {
+		return outs < 2 && runnersOn() > 0;
+	}
+
 	/**
 	 * Returns true if it is possible to hit a double play given the game state.
 	 * @return true when a double play is possible

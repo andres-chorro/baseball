@@ -12,6 +12,7 @@ public class Game {
 	private boolean isBottom;
 	private int awayScore;
 	private int homeScore;
+	// Represents current players on bases: {1st, 2nd, 3rd}
 	private LinkedList<Player> bases;
 
 	public Game(List<Player> awayTeam, List<Player> homeTeam) {
@@ -111,6 +112,17 @@ public class Game {
 		outs += 2;
 		checkInningOver();
 	}
+	
+	public void triplePlay() {
+		if(!isTriplePlaySituation()) {
+			System.out.println("Error: not a triple-play situation!");
+			return;
+		}
+		getCurrentBatter().triplePlay();
+		incrementHitter();
+		outs += 3;
+		checkInningOver();
+	}
 
 	/**
 	 * Gets the current batter.
@@ -131,11 +143,26 @@ public class Game {
 		
 		int runnersOn = 0;
 		for (Player p: bases) {
-			if (p != null){
+			if (p != null)
 				runnersOn++;
-			}
 		}
 		return runnersOn > 0;
+	}
+	
+	/**
+	 * Returns true if it is possible to hit a triple play given the game state.
+	 * @return true when a triple play is possible
+	 */
+	public boolean isTriplePlaySituation() {
+		if (outs > 0)
+			return false;
+		
+		int runnersOn = 0;
+		for (Player p: bases) {
+			if (p != null)
+				runnersOn++;
+		}
+		return runnersOn > 1;
 	}
 
 	@Override
@@ -235,24 +262,13 @@ public class Game {
 		giants.add(new Player("Brandon", "Crawford", 35));
 		Game g = new Game(dodgers, giants);
 
+		//g.single();
+		//System.out.println("Single:\n" + g);
 		g.single();
 		System.out.println("Single:\n" + g);
-		g.strikeOut();
-		System.out.println("Strikeout:\n" + g);
-		g.strikeOut();
-		System.out.println("Strikeout:\n" + g);
-		g.doublePlay();
-		System.out.println("Double play:\n" + g);
-		g.strikeOut();
-		System.out.println("strikeout:\n" + g);
-		g.homerun();
-		System.out.println("homerun:\n" + g);
-		g.strikeOut();
-		System.out.println("strikeOut:\n" + g);
-		g.strikeOut();
-		System.out.println("strikeOut:\n" + g);
-		System.out.println("Kershaw RBIS: " + dodgers.get(0).getRbis());
-		System.out.println("Puig Average: " + dodgers.get(1).getBattingAverage());
+		g.triplePlay();
+		System.out.println("Triple Play:\n" + g);
+		
 	}
 
 }

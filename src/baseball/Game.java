@@ -168,7 +168,7 @@ public class Game {
 	 * Returns whether the game is over.
 	 * @return
 	 */
-	public boolean getGameOver() {
+	public boolean isGameOver() {
 		return gameOver;
 	}
 	

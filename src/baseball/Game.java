@@ -3,6 +3,8 @@ package baseball;
 import java.util.*;
 
 public class Game {
+	private final static int NUM_INNINGS = 3;
+	private boolean gameOver;
 	private List<Player> awayTeam;
 	private List<Player> homeTeam;
 	private int currentAwayHitter;
@@ -16,6 +18,7 @@ public class Game {
 	private LinkedList<Player> bases;
 
 	public Game(List<Player> awayTeam, List<Player> homeTeam) {
+		boolean gameOver = false;
 		this.awayTeam = awayTeam;
 		this.homeTeam = homeTeam;
 		currentAwayHitter = 0;
@@ -162,6 +165,14 @@ public class Game {
 	}
 	
 	/**
+	 * Returns whether the game is over.
+	 * @return
+	 */
+	public boolean getGameOver() {
+		return gameOver;
+	}
+	
+	/**
 	 * Returns true if a sacrifice is any different than a putout given the game state.
 	 * Note: for my purposes, this is identical to a double play situation. For readability and
 	 * maintainability, I have split the functions up.
@@ -237,9 +248,16 @@ public class Game {
 		}
 		if (!isBottom)
 			awayScore += runs;
-		else
+		else {
 			homeScore += runs;
+			checkWalkOff();
+		}
 		return runs;
+	}
+	
+	private void checkWalkOff() {
+		if (inning >= NUM_INNINGS && homeScore > awayScore)
+			gameOver = true;
 	}
 
 	/**

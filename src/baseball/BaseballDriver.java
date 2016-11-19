@@ -22,7 +22,7 @@ public class BaseballDriver {
 
 	private void mainMenu() {
 		boolean done = false;
-		while (!done) {
+		while (!done && !game.getGameOver()) {
 			System.out.println(game);
 			System.out.println(mainMenuText());
 			String input = sc.next().toLowerCase();

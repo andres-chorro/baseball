@@ -18,7 +18,7 @@ public class Game {
 	private LinkedList<Player> bases;
 
 	public Game(List<Player> awayTeam, List<Player> homeTeam) {
-		boolean gameOver = false;
+		gameOver = false;
 		this.awayTeam = awayTeam;
 		this.homeTeam = homeTeam;
 		currentAwayHitter = 0;
@@ -151,6 +151,22 @@ public class Game {
 	}
 	
 	/**
+	 * Gets the away team's current score.
+	 * @return away team's score
+	 */
+	public int getAwayScore() {
+		return awayScore;
+	}
+	
+	/**
+	 * Gets the home team's current score.
+	 * @return home team's score
+	 */
+	public int getHomeScore() {
+		return homeScore;
+	}
+	
+	/**
 	 * Gets the number of runners currently on base.
 	 * @return the number of runners on base.
 	 */
@@ -255,9 +271,25 @@ public class Game {
 		return runs;
 	}
 	
+	/**
+	 * checks whether a walk-off occurred. Called whenever home team scores.
+	 */
 	private void checkWalkOff() {
 		if (inning >= NUM_INNINGS && homeScore > awayScore)
 			gameOver = true;
+	}
+	
+	/**
+	 * Checks whether an inning ending ends the game. Should only be called after
+	 * and inning switch.
+	 */
+	private void checkGameOver() {
+		if (inning >= NUM_INNINGS && isBottom && homeScore > awayScore) {
+			gameOver = true;
+		}
+		if (inning > NUM_INNINGS && !isBottom && awayScore > homeScore) {
+			gameOver = true;
+		}
 	}
 
 	/**
@@ -290,6 +322,7 @@ public class Game {
 		}
 		isBottom = !isBottom;
 		outs = 0;
+		checkGameOver();
 	}
 
 	public static void main(String[] args) {

@@ -77,6 +77,11 @@ public class BaseballDriver {
 				break;
 			}
 		}
+		if (game.isGameOver()){
+			System.out.println("Game Over! Away: " + game.getAwayScore() + "\nHome: " + game.getHomeScore());
+		} else {
+			System.out.println("Game ended early");
+		}
 		
 	}
 	

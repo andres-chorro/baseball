@@ -1,14 +1,26 @@
 package baseball;
 
+import java.io.*;
 import java.util.*;
 
 public class BaseballDriver {
-	private Scanner sc = new Scanner(System.in);
-	private Game game;
 
-	public BaseballDriver(Game game) {
-		this.game = game;
+	private static Scanner sc = new Scanner(System.in);
+
+	private static ArrayList<Player> getLeague() {
+		System.out.println("[N]ew league, or [L]oad league");
+		String input = sc.next().toLowerCase();
+		if (input.equals("n")) {
+			System.out.println("New empty league created");
+			return new ArrayList<>();
+		} else {
+			System.out.println("Enter a league file Name:");
+			input = sc.next();
+			PlayerSerializer ps = new PlayerSerializer(input);
+			return ps.load();
+		}
 	}
+
 
 	private static Game testGame() {
 		List<Player> dodgers = new ArrayList<>();
@@ -20,14 +32,13 @@ public class BaseballDriver {
 		return new Game(dodgers, giants);
 	}
 
-	private void mainMenu() {
+	private void mainMenu(Game game) {
 		boolean done = false;
 		while (!done && !game.isGameOver()) {
 			System.out.print(game);
-			System.out.println(String.format("AVG: %.3f SLG: %.3f",
-					game.getCurrentBatter().getBattingAverage(),
+			System.out.println(String.format("AVG: %.3f SLG: %.3f", game.getCurrentBatter().getBattingAverage(),
 					game.getCurrentBatter().getSluggingPercentage()));
-			System.out.println(mainMenuText());
+			System.out.println(mainMenuText(game));
 			String input = sc.next().toLowerCase();
 			switch (input) {
 			case "single":
@@ -80,15 +91,15 @@ public class BaseballDriver {
 				break;
 			}
 		}
-		if (game.isGameOver()){
+		if (game.isGameOver()) {
 			System.out.println("Game Over! Away: " + game.getAwayScore() + "\nHome: " + game.getHomeScore());
 		} else {
 			System.out.println("Game ended early");
 		}
-		
+
 	}
-	
-	private String mainMenuText() {
+
+	private static String mainMenuText(Game game) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Choose one of the following options:\n");
 		sb.append("[single] [double] [triple] [homerun]\n");
@@ -104,7 +115,7 @@ public class BaseballDriver {
 	}
 
 	public static void main(String[] args) {
-		BaseballDriver driver = new BaseballDriver(testGame());
-		driver.mainMenu();
+		ArrayList<Player> league = getLeague();
+		System.out.println(league);
 	}
 }

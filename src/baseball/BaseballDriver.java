@@ -23,7 +23,8 @@ public class BaseballDriver {
 	private void mainMenu() {
 		boolean done = false;
 		while (!done && !game.isGameOver()) {
-			System.out.println(game);
+			System.out.print(game);
+			System.out.println(String.format("%3.3f", game.getCurrentBatter().getBattingAverage()));
 			System.out.println(mainMenuText());
 			String input = sc.next().toLowerCase();
 			switch (input) {

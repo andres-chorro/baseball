@@ -6,6 +6,31 @@ import java.util.*;
 public class BaseballDriver {
 
 	private static Scanner sc = new Scanner(System.in);
+	private ArrayList<Player> league;
+	private Game game;
+	
+	public BaseballDriver() {
+		league = getLeague();
+		// TODO: allow addition of players to league
+		boolean done = false;
+		while (!done) {
+			System.out.println(leagueMenuText());
+			System.out.println("[A]dd a player to league, or [Q]uit");
+			String in = sc.next();
+			if (in.equalsIgnoreCase("q")) {
+				done = true;
+			}
+			else if (in.equalsIgnoreCase("a")) {
+				System.out.println("Enter the new player: [first name] [last name] [number]:");
+				String fn = sc.next();
+				String ln = sc.next();
+				int n = sc.nextInt();
+				league.add(new Player(fn, ln, n));
+			}
+		}
+		// TODO: add players from league to each team
+		// TODO: create game for each team
+	}
 
 	private static ArrayList<Player> getLeague() {
 		System.out.println("[N]ew league, or [L]oad league");
@@ -32,7 +57,7 @@ public class BaseballDriver {
 		return new Game(dodgers, giants);
 	}
 
-	private void mainMenu(Game game) {
+	private void mainMenu() {
 		boolean done = false;
 		while (!done && !game.isGameOver()) {
 			System.out.print(game);
@@ -113,9 +138,18 @@ public class BaseballDriver {
 		sb.append("\n[quit]");
 		return sb.toString();
 	}
+	
+	private String leagueMenuText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("The league has the following players:\n");
+		for (int i = 0; i < league.size(); i++) {
+			sb.append(i + ": " + league.get(i) + "\n");
+		}
+		return sb.toString();
+	}
 
 	public static void main(String[] args) {
-		ArrayList<Player> league = getLeague();
-		System.out.println(league);
+		BaseballDriver dr = new BaseballDriver();
+		dr.mainMenu();
 	}
 }

@@ -11,13 +11,12 @@ public class BaseballDriver {
 	
 	public BaseballDriver() {
 		league = getLeague();
-		// TODO: allow addition of players to league
 		boolean done = false;
 		while (!done) {
 			System.out.println(leagueMenuText());
-			System.out.println("[A]dd a player to league, or [Q]uit");
+			System.out.println("[A]dd a player to league, or [D]one");
 			String in = sc.next();
-			if (in.equalsIgnoreCase("q")) {
+			if (in.equalsIgnoreCase("d")) {
 				done = true;
 			}
 			else if (in.equalsIgnoreCase("a")) {
@@ -26,10 +25,36 @@ public class BaseballDriver {
 				String ln = sc.next();
 				int n = sc.nextInt();
 				league.add(new Player(fn, ln, n));
+			} else {
+				System.out.println("Invalid input, try again");
 			}
 		}
-		// TODO: add players from league to each team
-		// TODO: create game for each team
+		System.out.println("Add players to the away team:");
+		LinkedList<Player> awayTeam = buildTeam();
+		System.out.println("Add players to the home team:");
+		LinkedList<Player> homeTeam = buildTeam();
+		game = new Game(awayTeam, homeTeam);
+	}
+
+	private LinkedList<Player> buildTeam() {
+		LinkedList<Player> result = new LinkedList<>();
+		boolean done = false;
+		while (!done) {
+			System.out.println(leagueMenuText());
+			System.out.println("Type the index of the player to add, or [D]one:");
+			String in = sc.next();
+			if (in.equalsIgnoreCase("d")) {
+				done = true;
+				break;
+			}
+			int index = Integer.parseInt(in);
+			if (index < 0 || index >= league.size()) {
+				System.out.println("Invalid index, try again");
+			} else {
+				result.add(league.get(index));
+			}
+		}
+		return result;
 	}
 
 	private static ArrayList<Player> getLeague() {
@@ -151,5 +176,9 @@ public class BaseballDriver {
 	public static void main(String[] args) {
 		BaseballDriver dr = new BaseballDriver();
 		dr.mainMenu();
+		System.out.println("enter a filename to save your league");
+		String fn = dr.sc.next();
+		PlayerSerializer ps = new PlayerSerializer(fn);
+		ps.save(dr.league);
 	}
 }

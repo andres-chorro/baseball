@@ -1,6 +1,7 @@
 package baseball;
 
 import java.io.*;
+import java.util.List;
 
 public class Player implements Serializable{
 	private String firstName;
@@ -173,6 +174,10 @@ public class Player implements Serializable{
 		return atBats;
 	}
 	
+	public int getHits() {
+		return singles + doubles + triples + homeruns;
+	}
+	
 	public int getSingles() {
 		return singles;
 	}
@@ -241,6 +246,22 @@ public class Player implements Serializable{
 	}
 	
 	/**
+	 * Converts a double representing an average (avg, slg, etc.)
+	 * into a string with commonly used baseball format.
+	 * @param avg
+	 * @return
+	 */
+	public static String baseballPercentage(double avg) {
+		if (avg >= 10 || avg < 0) 
+			throw new IllegalArgumentException("Averages must be between 0 and 10");
+		String result = String.format("%.3f", avg);
+		if (avg < 1) {
+			result = result.substring(1);
+		}
+		return result;
+	}
+	
+	/**
 	 * Returns the player's slugging percentage
 	 * @return slugging percentage
 	 */
@@ -250,41 +271,28 @@ public class Player implements Serializable{
 		return (double) (singles + 2 * doubles + 3 * triples + 4 * homeruns) / atBats;
 	}
 	
+	public static String hittingStats(List<Player> list) {
+		StringBuilder res = new StringBuilder();
+		String bar = "--------------------------------------------------------------------------------\n";
+		res.append(bar);
+		res.append("|Name                          |AB   |RBI |H   |1B  |2B  |3B  |HR  |AVG  |SLG  |\n");
+		for (Player p: list) {
+			res.append(String.format("|%-30s|%5d|%5d|%5d|%5d|%5d|%5d|%5d|%5s|%5s|", 
+					p.getLastName() + ", " + p.getFirstName(), p.getAtBats(), p.getRbis(),
+					p.getHits(), p.getSingles(), p.getDoubles(), p.getTriples(), p.getHomeruns(),
+					baseballPercentage(p.getBattingAverage()), baseballPercentage(p.getSluggingPercentage())));
+			res.append(bar);
+		}
+		return res.toString();
+		
+	}
+	
 	public static void main(String[] args) {
-		Player p = null;
-		try {
-			FileInputStream fileIn = new FileInputStream("players.ser");
-			ObjectInputStream in = new ObjectInputStream(fileIn);
-			p = (Player) in.readObject();
-			in.close();
-			fileIn.close();
-		} catch(IOException i){
-			i.printStackTrace();
-			p = new Player("John", "Dowd", 25);
-		} catch(ClassNotFoundException c) {
-			System.out.println("Player class not found");
-			c.printStackTrace();
-			p = new Player("John", "Dowd", 25);
-		}
-		System.out.println(p.fullName());
-		System.out.println(p.getBattingAverage());
-		p.single(1);
-		p.homerun(3);
-		p.strikeOut();
-		p.doublePlay();
-		System.out.println(p.getBattingAverage());
-		System.out.println(p.getSluggingPercentage());
-		System.out.println(p.getAtBats());
-		try {
-			FileOutputStream fileOut = new FileOutputStream("players.ser");
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(p);
-			out.close();
-			fileOut.close();
-			System.out.println("Serialized player is stored in players.ser");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println(baseballPercentage(1.534543));
+		System.out.println(baseballPercentage(0.110232));
+		System.out.println(baseballPercentage(0));
+		System.out.println(baseballPercentage(-3.53));
+		System.out.println(baseballPercentage(10.53435));
+		
 	}
 }

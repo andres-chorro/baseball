@@ -6,7 +6,7 @@ import java.util.*;
 public class BaseballDriver {
 
 	private static Scanner sc = new Scanner(System.in);
-	private ArrayList<Player> league;
+	private static ArrayList<Player> league;
 	private Game game;
 	
 	public BaseballDriver() {
@@ -175,6 +175,7 @@ public class BaseballDriver {
 
 	public static void main(String[] args) {
 		BaseballDriver dr = new BaseballDriver();
+		System.out.println(Player.hittingStats(league));
 		dr.mainMenu();
 		System.out.println("enter a filename to save your league");
 		String fn = dr.sc.next();

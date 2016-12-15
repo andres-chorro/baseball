@@ -275,9 +275,10 @@ public class Player implements Serializable{
 		StringBuilder res = new StringBuilder();
 		String bar = "--------------------------------------------------------------------------------\n";
 		res.append(bar);
-		res.append("|Name                          |AB   |RBI |H   |1B  |2B  |3B  |HR  |AVG  |SLG  |\n");
+		res.append("|Name                          |   AB| RBI|   H|  1B|  2B|  3B|  HR|  AVG|  SLG|\n");
+		res.append(bar);
 		for (Player p: list) {
-			res.append(String.format("|%-30s|%5d|%5d|%5d|%5d|%5d|%5d|%5d|%5s|%5s|", 
+			res.append(String.format("|%-30s|%5d|%4d|%4d|%4d|%4d|%4d|%4d|%5s|%5s|\n", 
 					p.getLastName() + ", " + p.getFirstName(), p.getAtBats(), p.getRbis(),
 					p.getHits(), p.getSingles(), p.getDoubles(), p.getTriples(), p.getHomeruns(),
 					baseballPercentage(p.getBattingAverage()), baseballPercentage(p.getSluggingPercentage())));

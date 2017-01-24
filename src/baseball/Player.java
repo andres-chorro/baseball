@@ -65,7 +65,7 @@ public class Player implements Serializable{
 		atBats++;
 	}
 	
-	public void recordhomerun() {
+	public void recordHomerun() {
 		homeruns++;
 		atBats++;
 	}

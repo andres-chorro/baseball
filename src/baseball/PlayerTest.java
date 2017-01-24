@@ -1,17 +1,45 @@
 package baseball;
 
 import static org.junit.Assert.*;
-
+import org.junit.Before;
 import org.junit.Test;
 
 public class PlayerTest {
+	
+	private Player p;
+	
+	@Before
+	public void setupPlayer() {
+		p = new Player("John", "Dowd", 15);
+	}
 
 	@Test
-	public void hitSingle() {
-		Player p = new Player("John", "Dowd", 15);
-		p.single(1);
+	public void recordSingle() {
+		p.recordSingle();
 		assertEquals(1, p.getSingles());
-		assertEquals(1, p.getRbis());
+	}
+	
+	@Test
+	public void recordDouble() {
+		p.recordDouble();
+		p.recordDouble();
+		assertEquals(2, p.getDoubles());
+	}
+	
+	@Test
+	public void recordTriple() {
+		for (int i = 0; i < 68; i++) {
+			p.recordTriple();
+		}
+		assertEquals(68, p.getTriples());
+	}
+	
+	@Test
+	public void recordHomeRun() {
+		assertEquals(0, p.getHomeruns());
+		p.recordHomerun();
+		assertEquals(1, p.getHomeruns());
+		
 	}
 
 }

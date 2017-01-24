@@ -63,7 +63,7 @@ public class Game {
 		bases.push(currentHitter);
 		bases.push(null);
 		bases.push(null);
-		currentHitter.triple(countRuns());
+		currentHitter.recordTriple(countRuns());
 		incrementHitter();
 	}
 
@@ -84,7 +84,7 @@ public class Game {
 	 * Update game to reflect a strikeout by the current hitter.
 	 */
 	public void strikeOut() {
-		getCurrentBatter().strikeOut();
+		getCurrentBatter().recordStrikeOut();
 		incrementHitter();
 		outs++;
 		checkInningOver();
@@ -94,7 +94,7 @@ public class Game {
 	 * Update Game to reflect a putout by the current hitter.
 	 */
 	public void putOut() {
-		getCurrentBatter().putout();
+		getCurrentBatter().recordPutout();
 		incrementHitter();
 		outs++;
 		checkInningOver();
@@ -109,7 +109,7 @@ public class Game {
 			return;
 		}
 		bases.push(null);
-		getCurrentBatter().sacrifice(countRuns());
+		getCurrentBatter().recordSacrifice(countRuns());
 		incrementHitter();
 		outs++;
 	}
@@ -119,7 +119,7 @@ public class Game {
 			System.out.println("Error: not a double-play situation!");
 			return;
 		}
-		getCurrentBatter().doublePlay();
+		getCurrentBatter().recordDoublePlay();
 		incrementHitter();
 		int leadRunnerIndex = 2;
 		while (bases.get(leadRunnerIndex) == null) {
@@ -135,7 +135,7 @@ public class Game {
 			System.out.println("Error: not a triple-play situation!");
 			return;
 		}
-		getCurrentBatter().triplePlay();
+		getCurrentBatter().recordTriplePlay();
 		incrementHitter();
 		outs += 3;
 		checkInningOver();
@@ -259,7 +259,7 @@ public class Game {
 			Player curr = bases.removeLast();
 			if (curr != null) {
 				runs++;
-				curr.addRun();
+				curr.recordRun();
 			}
 		}
 		if (!isBottom)

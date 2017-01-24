@@ -40,8 +40,9 @@ public class Game {
 	public void single() {
 		Player currentHitter = getCurrentBatter();
 		bases.push(currentHitter);
-		currentHitter.single(countRuns());
-		incrementHitter();
+		currentHitter.recordSingle();
+		currentHitter.recordRbis(countRuns());
+		incrementCurrentHitter();
 	}
 
 	/**
@@ -51,8 +52,9 @@ public class Game {
 		Player currentHitter = getCurrentBatter();
 		bases.push(currentHitter);
 		bases.push(null);
-		currentHitter.hitDouble(countRuns());
-		incrementHitter();
+		currentHitter.recordDouble();
+		currentHitter.recordRbis(countRuns());
+		incrementCurrentHitter();
 	}
 
 	/**
@@ -63,54 +65,45 @@ public class Game {
 		bases.push(currentHitter);
 		bases.push(null);
 		bases.push(null);
-		currentHitter.recordTriple(countRuns());
-		incrementHitter();
+		currentHitter.recordTriple();
+		currentHitter.recordRbis(countRuns());
+		incrementCurrentHitter();
 	}
 
-	/**
-	 * Update the game to reflect a homerun by the current hitter.
-	 */
 	public void homerun() {
 		Player currentHitter = getCurrentBatter();
 		bases.push(currentHitter);
 		bases.push(null);
 		bases.push(null);
 		bases.push(null);
-		currentHitter.homerun(countRuns());
-		incrementHitter();
+		currentHitter.recordHomerun();
+		currentHitter.recordRbis(countRuns());
+		incrementCurrentHitter();
 	}
 	
-	/**
-	 * Update game to reflect a strikeout by the current hitter.
-	 */
 	public void strikeOut() {
 		getCurrentBatter().recordStrikeOut();
-		incrementHitter();
+		incrementCurrentHitter();
 		outs++;
-		checkInningOver();
+		changeInningIfNeeded();
 	}
 	
-	/**
-	 * Update Game to reflect a putout by the current hitter.
-	 */
 	public void putOut() {
 		getCurrentBatter().recordPutout();
-		incrementHitter();
+		incrementCurrentHitter();
 		outs++;
-		checkInningOver();
+		changeInningIfNeeded();
 	}
 	
-	/**
-	 * Update the game to reflect a sacrifice by the current hitter.
-	 */
 	public void sacrifice() {
 		if (!isSacrificeSituation()) {
 			System.out.println("Error: not a sacrifice situation!");
 			return;
 		}
 		bases.push(null);
-		getCurrentBatter().recordSacrifice(countRuns());
-		incrementHitter();
+		getCurrentBatter().recordSacrifice();
+		getCurrentBatter().recordRbis(countRuns());
+		incrementCurrentHitter();
 		outs++;
 	}
 
@@ -120,14 +113,14 @@ public class Game {
 			return;
 		}
 		getCurrentBatter().recordDoublePlay();
-		incrementHitter();
+		incrementCurrentHitter();
 		int leadRunnerIndex = 2;
 		while (bases.get(leadRunnerIndex) == null) {
 			leadRunnerIndex--;
 		}
 		bases.set(leadRunnerIndex, null);
 		outs += 2;
-		checkInningOver();
+		changeInningIfNeeded();
 	}
 	
 	public void triplePlay() {
@@ -136,40 +129,23 @@ public class Game {
 			return;
 		}
 		getCurrentBatter().recordTriplePlay();
-		incrementHitter();
+		incrementCurrentHitter();
 		outs += 3;
-		checkInningOver();
+		changeInningIfNeeded();
 	}
 
-	/**
-	 * Gets the current batter.
-	 * 
-	 * @return the current batter
-	 */
 	public Player getCurrentBatter() {
 		return isBottom ? homeTeam.get(currentHomeHitter) : awayTeam.get(currentAwayHitter);
 	}
 	
-	/**
-	 * Gets the away team's current score.
-	 * @return away team's score
-	 */
 	public int getAwayScore() {
 		return awayScore;
 	}
 	
-	/**
-	 * Gets the home team's current score.
-	 * @return home team's score
-	 */
 	public int getHomeScore() {
 		return homeScore;
 	}
 	
-	/**
-	 * Gets the number of runners currently on base.
-	 * @return the number of runners on base.
-	 */
 	public int runnersOn() {
 		int result = 0;
 		for (Player p : bases) {
@@ -180,10 +156,6 @@ public class Game {
 		return result;
 	}
 	
-	/**
-	 * Returns whether the game is over.
-	 * @return
-	 */
 	public boolean isGameOver() {
 		return gameOver;
 	}
@@ -191,25 +163,16 @@ public class Game {
 	/**
 	 * Returns true if a sacrifice is any different than a putout given the game state.
 	 * Note: for my purposes, this is identical to a double play situation. For readability and
-	 * maintainability, I have split the functions up.
-	 * @return true when runner(s) can be moved over by a sacrifice.
+	 * maintainability, I have provided both functions.
 	 */
 	public boolean isSacrificeSituation() {
 		return outs < 2 && runnersOn() > 0;
 	}
 
-	/**
-	 * Returns true if it is possible to hit a double play given the game state.
-	 * @return true when a double play is possible
-	 */
 	public boolean isDoublePlaySituation() {
 		return outs < 2 && runnersOn() > 0;
 	}
 	
-	/**
-	 * Returns true if it is possible to hit a triple play given the game state.
-	 * @return true when a triple play is possible
-	 */
 	public boolean isTriplePlaySituation() {
 		return outs < 1 && runnersOn() > 1;
 	}
@@ -270,19 +233,25 @@ public class Game {
 		}
 		return runs;
 	}
-	
-	/**
-	 * checks whether a walk-off occurred. Called whenever home team scores.
-	 */
+
 	private void checkWalkOff() {
 		if (inning >= NUM_INNINGS && homeScore > awayScore)
 			gameOver = true;
 	}
 	
-	/**
-	 * Checks whether an inning ending ends the game. Should only be called after
-	 * and inning switch.
-	 */
+	private void changeInningIfNeeded() {
+		if (outs < 3) {
+			return;
+		}
+		clearBases();
+		if (isBottom) {
+			inning++;
+		}
+		isBottom = !isBottom;
+		outs = 0;
+		checkGameOver();
+	}
+
 	private void checkGameOver() {
 		if (inning >= NUM_INNINGS && isBottom && homeScore > awayScore) {
 			gameOver = true;
@@ -292,10 +261,7 @@ public class Game {
 		}
 	}
 
-	/**
-	 * Updates the current hitter variables to reflect the end of the at-bat.
-	 */
-	private void incrementHitter() {
+	private void incrementCurrentHitter() {
 		if (!isBottom) {
 			currentAwayHitter = (currentAwayHitter + 1) % awayTeam.size();
 		} else {
@@ -303,44 +269,10 @@ public class Game {
 		}
 	}
 	
-	/**
-	 * Performs the inning switch if necessary
-	 */
-	private void checkInningOver() {
-		if (outs < 3) {
-			return;
-		}
-		
-		//clear the bases
+	private void clearBases() {
 		bases = new LinkedList<>();
 		for (int i = 0; i < 3; i++) {
 			bases.add(null);
 		}
-		
-		if (isBottom) {
-			inning++;
-		}
-		isBottom = !isBottom;
-		outs = 0;
-		checkGameOver();
 	}
-
-	public static void main(String[] args) {
-		List<Player> dodgers = new ArrayList<>();
-		List<Player> giants = new ArrayList<>();
-		dodgers.add(new Player("Klayton", "Kershaw", 22));
-		dodgers.add(new Player("Yasiel", "Puig", 66));
-		giants.add(new Player("Buster", "Posey", 28));
-		giants.add(new Player("Brandon", "Crawford", 35));
-		Game g = new Game(dodgers, giants);
-
-		//g.single();
-		//System.out.println("Single:\n" + g);
-		g.single();
-		System.out.println("Single:\n" + g);
-		g.triplePlay();
-		System.out.println("Triple Play:\n" + g);
-		
-	}
-
 }

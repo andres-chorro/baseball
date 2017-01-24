@@ -39,7 +39,12 @@ public class PlayerTest {
 		assertEquals(0, p.getHomeruns());
 		p.recordHomerun();
 		assertEquals(1, p.getHomeruns());
-		
+	}
+	
+	@Test
+	public void recordRbis() {
+		p.recordRbis(3);
+		assertEquals(3, p.getRbis());
 	}
 
 }

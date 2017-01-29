@@ -1,6 +1,5 @@
 package baseball;
 
-import java.io.*;
 import java.util.*;
 
 public class BaseballDriver {
@@ -69,17 +68,6 @@ public class BaseballDriver {
 			PlayerSerializer ps = new PlayerSerializer(input);
 			return ps.load();
 		}
-	}
-
-
-	private static Game testGame() {
-		List<Player> dodgers = new ArrayList<>();
-		List<Player> giants = new ArrayList<>();
-		dodgers.add(new Player("Klayton", "Kershaw", 22));
-		dodgers.add(new Player("Yasiel", "Puig", 66));
-		giants.add(new Player("Buster", "Posey", 28));
-		giants.add(new Player("Brandon", "Crawford", 35));
-		return new Game(dodgers, giants);
 	}
 
 	private void mainMenu() {

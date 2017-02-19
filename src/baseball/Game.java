@@ -15,7 +15,7 @@ public class Game {
 	private int awayScore;
 	private int homeScore;
 	// Represents current players on bases: {1st, 2nd, 3rd}
-	private LinkedList<Player> bases;
+	private Bases bases;
 
 	public Game(List<Player> awayTeam, List<Player> homeTeam) {
 		gameOver = false;
@@ -28,15 +28,13 @@ public class Game {
 		isBottom = false;
 		awayScore = 0;
 		homeScore = 0;
-		bases = new LinkedList<>();
-		for (int i = 0; i < 3; i++) {
-			bases.push(null);
-		}
+		bases = new Bases();
 	}
 
 	public void single() {
 		Player currentHitter = getCurrentBatter();
-		bases.push(currentHitter);
+		bases.advanceRunners(1);
+		bases.putRunnerOn(currentHitter, 1);
 		currentHitter.recordSingle();
 		currentHitter.recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -44,8 +42,8 @@ public class Game {
 
 	public void hitDouble() {
 		Player currentHitter = getCurrentBatter();
-		bases.push(currentHitter);
-		bases.push(null);
+		bases.advanceRunners(2);
+		bases.putRunnerOn(currentHitter, 2);
 		currentHitter.recordDouble();
 		currentHitter.recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -53,9 +51,8 @@ public class Game {
 
 	public void triple() {
 		Player currentHitter = getCurrentBatter();
-		bases.push(currentHitter);
-		bases.push(null);
-		bases.push(null);
+		bases.advanceRunners(3);
+		bases.putRunnerOn(currentHitter, 3);
 		currentHitter.recordTriple();
 		currentHitter.recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -63,10 +60,9 @@ public class Game {
 
 	public void homerun() {
 		Player currentHitter = getCurrentBatter();
-		bases.push(currentHitter);
-		bases.push(null);
-		bases.push(null);
-		bases.push(null);
+		bases.advanceRunners(1);
+		bases.putRunnerOn(currentHitter, 1);
+		bases.advanceRunners(3);
 		currentHitter.recordHomerun();
 		currentHitter.recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -91,7 +87,7 @@ public class Game {
 			System.out.println("Error: not a sacrifice situation!");
 			return;
 		}
-		bases.push(null);
+		bases.advanceRunners(1);
 		getCurrentBatter().recordSacrifice();
 		getCurrentBatter().recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -104,12 +100,8 @@ public class Game {
 			return;
 		}
 		getCurrentBatter().recordDoublePlay();
+		bases.removeLeadRunner();
 		incrementCurrentHitter();
-		int leadRunnerIndex = 2;
-		while (bases.get(leadRunnerIndex) == null) {
-			leadRunnerIndex--;
-		}
-		bases.set(leadRunnerIndex, null);
 		outs += 2;
 		changeInningIfNeeded();
 	}
@@ -138,13 +130,7 @@ public class Game {
 	}
 	
 	public int runnersOn() {
-		int result = 0;
-		for (Player p : bases) {
-			if (p != null) {
-				result++;
-			}
-		}
-		return result;
+		return bases.getNumRunnersOn();
 	}
 	
 	public boolean isGameOver() {
@@ -178,23 +164,10 @@ public class Game {
 				homeScore, outs > 0 ? 'X' : ' ', outs > 1 ? 'X' : ' '));
 		
 		// add bases
-		String[] baseStrings = new String[3];
-		for (int i = 0; i < 3; i++) {
-			if (bases.get(i) != null)
-				baseStrings[i] = bases.get(i).getLastName();
-			else
-				baseStrings[i] = "";
-		}
-		// second
-		int gap = (28 - baseStrings[1].length()) / 2;
-		s.append(String.format("%" + gap + "s[%s]\n\n", 
-				"", baseStrings[1]));
-		// first and third
-		gap = (26 - (baseStrings[0].length() + baseStrings[2].length()));
-		s.append(String.format("[%s]%" + gap + "s[%s]\n\n", baseStrings[2], "", baseStrings[0]));
+		s.append(bases.scoreBoardString());
 		// batter
 		String batterLastName = getCurrentBatter().getLastName();
-		gap = (28 - batterLastName.length()) / 2;
+		int gap = (28 - batterLastName.length()) / 2;
 		s.append(String.format("%" + gap + "s[%s]\n",
 				"", batterLastName));
 		return s.toString();
@@ -208,13 +181,10 @@ public class Game {
 	 * @return number of runs scored
 	 */
 	private int countRuns() {
-		int runs = 0;
-		while (bases.size() > 3) {
-			Player curr = bases.removeLast();
-			if (curr != null) {
-				runs++;
-				curr.recordRun();
-			}
+		List<Player> scorers = bases.getAndCleanRunnersIn();
+		int runs = scorers.size();
+		for (Player p : scorers) {
+			p.recordRun();
 		}
 		if (!isBottom)
 			awayScore += runs;
@@ -234,7 +204,7 @@ public class Game {
 		if (outs < 3) {
 			return;
 		}
-		clearBases();
+		bases.clearBases();
 		if (isBottom) {
 			inning++;
 		}
@@ -257,13 +227,6 @@ public class Game {
 			currentAwayHitter = (currentAwayHitter + 1) % awayTeam.size();
 		} else {
 			currentHomeHitter = (currentHomeHitter + 1) % homeTeam.size();
-		}
-	}
-	
-	private void clearBases() {
-		bases = new LinkedList<>();
-		for (int i = 0; i < 3; i++) {
-			bases.add(null);
 		}
 	}
 }

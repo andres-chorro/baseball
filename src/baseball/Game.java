@@ -33,10 +33,7 @@ public class Game {
 			bases.push(null);
 		}
 	}
-	
-	/**
-	 * Update the game to reflect a single by the current hitter.
-	 */
+
 	public void single() {
 		Player currentHitter = getCurrentBatter();
 		bases.push(currentHitter);
@@ -45,9 +42,6 @@ public class Game {
 		incrementCurrentHitter();
 	}
 
-	/**
-	 * Update the game to reflect a double by the current hitter.
-	 */
 	public void hitDouble() {
 		Player currentHitter = getCurrentBatter();
 		bases.push(currentHitter);
@@ -57,9 +51,6 @@ public class Game {
 		incrementCurrentHitter();
 	}
 
-	/**
-	 * Update the game to reflect a triple by the current hitter.
-	 */
 	public void triple() {
 		Player currentHitter = getCurrentBatter();
 		bases.push(currentHitter);

@@ -1,6 +1,6 @@
 package baseball;
 
-import java.util.LinkedList;
+import java.util.*;
 
 public class Bases {
 	public static final Player NO_RUNNER = new Player("EMPTY", "BASE", 0);
@@ -33,8 +33,9 @@ public class Bases {
 	
 	public int getNumRunnersOn() {
 		int result = 0;
+		Iterator<Player> it = bases.iterator();
 		for (int i = 0; i < 3; i++) {
-			if (!bases.get(i).equals(NO_RUNNER)) {
+			if (!it.next().equals(NO_RUNNER)) {
 				result++;
 			}
 		}

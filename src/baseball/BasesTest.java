@@ -79,5 +79,21 @@ public class BasesTest {
 		assertEquals(Bases.NO_RUNNER, b.getRunnerOnSecond());
 		assertEquals(Bases.NO_RUNNER, b.getRunnerOnThird());
 	}
+	
+	@Test
+	public void testRemoveLeadRunner() {
+		b.putRunnerOn(p2, 2);
+		b.removeLeadRunner();
+		assertEquals(0, b.getNumRunnersOn());
+		assertEquals(Bases.NO_RUNNER, b.getRunnerOnSecond());
+		
+		b.putRunnerOn(p3, 3);
+		b.putRunnerOn(p1, 1);
+		b.removeLeadRunner();
+		assertEquals(1, b.getNumRunnersOn());
+		assertEquals(Bases.NO_RUNNER, b.getRunnerOnThird());
+		assertEquals(Bases.NO_RUNNER, b.getRunnerOnSecond());
+		assertEquals(p1, b.getRunnerOnFirst());
+	}
 
 }

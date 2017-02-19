@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Bases {
 	public static final Player NO_RUNNER = new Player("EMPTY", "BASE", 0);
+	private static final int NUM_BASES = 3;
 	private LinkedList<Player> bases;
 	
 	public Bases() {
@@ -12,7 +13,7 @@ public class Bases {
 	
 	public void clearBases() {
 		bases = new LinkedList<>();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < NUM_BASES; i++) {
 			bases.add(NO_RUNNER);
 		}
 	}
@@ -31,10 +32,19 @@ public class Bases {
 		bases.set(index, runner);
 	}
 	
+	public void removeLeadRunner() {
+		for (int i = NUM_BASES - 1; i >= 0; i--) {
+			if(!bases.get(i).equals(NO_RUNNER)) {
+				bases.set(i, NO_RUNNER);
+				return;
+			}
+		}
+	}
+	
 	public int getNumRunnersOn() {
 		int result = 0;
 		Iterator<Player> it = bases.iterator();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < NUM_BASES; i++) {
 			if (!it.next().equals(NO_RUNNER)) {
 				result++;
 			}
@@ -58,7 +68,7 @@ public class Bases {
 		List<Player> runnersIn = new LinkedList<>();
 		Iterator<Player> it = bases.iterator();
 		// skip players on base
-		for (int i = 0; i< 3; i++)
+		for (int i = 0; i< NUM_BASES; i++)
 			it.next();
 		while(it.hasNext()) {
 			Player p = it.next();

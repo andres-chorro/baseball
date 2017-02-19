@@ -5,7 +5,6 @@ import java.util.LinkedList;
 public class Bases {
 	public static final Player NO_RUNNER = new Player("EMPTY", "BASE", 0);
 	private LinkedList<Player> bases;
-	private int runnersOn;
 	
 	public Bases() {
 		clearBases();
@@ -16,14 +15,12 @@ public class Bases {
 		for (int i = 0; i < 3; i++) {
 			bases.add(NO_RUNNER);
 		}
-		runnersOn = 0;
 	}
 	
 	public void advanceRunners(int numBases) {
 		for (int i = 0; i < numBases; i++) {
 			bases.addFirst(NO_RUNNER);
 		}
-		updateRunnersOn();
 	}
 	
 	/**
@@ -32,20 +29,16 @@ public class Bases {
 	public void putRunnerOn(Player runner, int base) {
 		int index = base - 1;
 		bases.set(index, runner);
-		updateRunnersOn();
 	}
 	
-	private void updateRunnersOn() {
-		runnersOn = 0;
+	public int getNumRunnersOn() {
+		int result = 0;
 		for (int i = 0; i < 3; i++) {
-			if (bases.get(i) != NO_RUNNER) {
-				runnersOn++;
+			if (!bases.get(i).equals(NO_RUNNER)) {
+				result++;
 			}
 		}
-	}
-	
-	public int getRunnersOn() {
-		return runnersOn;
+		return result;
 	}
 	
 	public Player getRunnerOnFirst() {

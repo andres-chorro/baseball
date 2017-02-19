@@ -20,8 +20,4 @@ public class GameTest {
 		g = new Game(dodgers, giants);
 	}
 	
-	@Test
-	public void clearBases() {
-		
-	}
 }

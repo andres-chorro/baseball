@@ -67,5 +67,17 @@ public class BasesTest {
 		assertEquals(p1, scorers.get(0));
 		assertEquals(p2, scorers.get(1));
 	}
+	
+	@Test
+	public void testClearBases() {
+		b.putRunnerOn(p1, 1);
+		b.putRunnerOn(p3, 2);
+		b.clearBases();
+		assertEquals(0, b.getNumRunnersOn());
+		assertTrue(b.getAndCleanRunnersIn().isEmpty());
+		assertEquals(Bases.NO_RUNNER, b.getRunnerOnFirst());
+		assertEquals(Bases.NO_RUNNER, b.getRunnerOnSecond());
+		assertEquals(Bases.NO_RUNNER, b.getRunnerOnThird());
+	}
 
 }

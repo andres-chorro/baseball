@@ -64,8 +64,8 @@ public class BasesTest {
 		b.advanceRunners(4);
 		scorers = b.getAndCleanRunnersIn();
 		assertEquals(2, scorers.size());
-		assertEquals(p1, scorers.get(0));
-		assertEquals(p2, scorers.get(1));
+		assertEquals(p2, scorers.get(0));
+		assertEquals(p1, scorers.get(1));
 	}
 	
 	@Test

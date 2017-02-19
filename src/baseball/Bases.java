@@ -66,13 +66,8 @@ public class Bases {
 	
 	public List<Player> getAndCleanRunnersIn() {
 		List<Player> runnersIn = new LinkedList<>();
-		Iterator<Player> it = bases.iterator();
-		// skip players on base
-		for (int i = 0; i< NUM_BASES; i++)
-			it.next();
-		while(it.hasNext()) {
-			Player p = it.next();
-			it.remove();
+		while(bases.size() > NUM_BASES) {
+			Player p = bases.removeLast();
 			if (!p.equals(NO_RUNNER)) {
 				runnersIn.add(p);
 			}

@@ -1,8 +1,10 @@
 package baseball;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
+import java.util.List;
+
 import org.junit.Test;
 
 public class BasesTest {
@@ -38,15 +40,32 @@ public class BasesTest {
 	
 	@Test
 	public void putRunnerOn() {
-		Player p1 = new Player("Andres", "Chorro", 7);
-		Player p2 = new Player("Quique", "Dahlgren", 13);
-		Player p3 = new Player("Erik", "Jennings", 15);
 		b.putRunnerOn(p3, 3);
 		b.putRunnerOn(p1, 1);
 		b.putRunnerOn(p2, 2);
 		assertEquals(p1, b.getRunnerOnFirst());
 		assertEquals(p2, b.getRunnerOnSecond());
 		assertEquals(p3, b.getRunnerOnThird());
+	}
+	
+	@Test
+	public void testGetAndClearBases() {
+		b.putRunnerOn(p1, 3);
+		b.advanceRunners(1);
+		List<Player> scorers = b.getAndCleanRunnersIn();
+		assertEquals(1, scorers.size());
+		assertEquals(p1, scorers.get(0));
+		
+		scorers = b.getAndCleanRunnersIn();
+		assertTrue(scorers.isEmpty());
+		
+		b.putRunnerOn(p1, 1);
+		b.putRunnerOn(p2, 3);
+		b.advanceRunners(4);
+		scorers = b.getAndCleanRunnersIn();
+		assertEquals(2, scorers.size());
+		assertEquals(p1, scorers.get(0));
+		assertEquals(p2, scorers.get(1));
 	}
 
 }

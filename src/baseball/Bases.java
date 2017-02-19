@@ -54,6 +54,22 @@ public class Bases {
 		return bases.get(2);
 	}
 	
+	public List<Player> getAndCleanRunnersIn() {
+		List<Player> runnersIn = new LinkedList<>();
+		Iterator<Player> it = bases.iterator();
+		// skip players on base
+		for (int i = 0; i< 3; i++)
+			it.next();
+		while(it.hasNext()) {
+			Player p = it.next();
+			it.remove();
+			if (!p.equals(NO_RUNNER)) {
+				runnersIn.add(p);
+			}
+		}
+		return runnersIn;
+	}
+	
 	public String scoreBoardString() {
 		StringBuilder s = new StringBuilder();
 		String[] nameStrings = new String[3];

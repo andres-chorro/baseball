@@ -34,7 +34,7 @@ public class Game {
 	public void single() {
 		Player currentHitter = getCurrentBatter();
 		bases.advanceRunners(1);
-		bases.putRunnerOn(currentHitter, 1);
+		bases.putRunnerOn(currentHitter, Base.FIRST);
 		currentHitter.recordSingle();
 		currentHitter.recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -43,7 +43,7 @@ public class Game {
 	public void hitDouble() {
 		Player currentHitter = getCurrentBatter();
 		bases.advanceRunners(2);
-		bases.putRunnerOn(currentHitter, 2);
+		bases.putRunnerOn(currentHitter, Base.SECOND);
 		currentHitter.recordDouble();
 		currentHitter.recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -52,7 +52,7 @@ public class Game {
 	public void triple() {
 		Player currentHitter = getCurrentBatter();
 		bases.advanceRunners(3);
-		bases.putRunnerOn(currentHitter, 3);
+		bases.putRunnerOn(currentHitter, Base.THIRD);
 		currentHitter.recordTriple();
 		currentHitter.recordRbis(countRuns());
 		incrementCurrentHitter();
@@ -61,7 +61,7 @@ public class Game {
 	public void homerun() {
 		Player currentHitter = getCurrentBatter();
 		bases.advanceRunners(1);
-		bases.putRunnerOn(currentHitter, 1);
+		bases.putRunnerOn(currentHitter, Base.FIRST);
 		bases.advanceRunners(3);
 		currentHitter.recordHomerun();
 		currentHitter.recordRbis(countRuns());

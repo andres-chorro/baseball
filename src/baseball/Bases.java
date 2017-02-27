@@ -24,11 +24,8 @@ public class Bases {
 		}
 	}
 	
-	/**
-	 * @param base 1 for First Base, 2 for Second Base, 3 for Third Base
-	 */
-	public void putRunnerOn(Player runner, int base) {
-		int index = base - 1;
+	public void putRunnerOn(Player runner, Base base) {
+		int index = base.toInt() - 1;
 		bases.set(index, runner);
 	}
 	

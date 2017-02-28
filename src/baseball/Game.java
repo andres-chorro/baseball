@@ -14,7 +14,6 @@ public class Game {
 	private boolean isBottom;
 	private int awayScore;
 	private int homeScore;
-	// Represents current players on bases: {1st, 2nd, 3rd}
 	private Bases bases;
 
 	public Game(List<Player> awayTeam, List<Player> homeTeam) {
@@ -137,11 +136,6 @@ public class Game {
 		return gameOver;
 	}
 	
-	/**
-	 * Returns true if a sacrifice is any different than a putout given the game state.
-	 * Note: for my purposes, this is identical to a double play situation. For readability and
-	 * maintainability, I have provided both functions.
-	 */
 	public boolean isSacrificeSituation() {
 		return outs < 2 && runnersOn() > 0;
 	}
